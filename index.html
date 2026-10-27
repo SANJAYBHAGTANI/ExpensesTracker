@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Expense Tracker Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="dashboard">
+
+        <header class="mobile-header">
+            <button id="mobileMenuBtn">☰</button>
+            <h2>💰 Expense Tracker</h2>
+        </header>
+
+        <aside class="sidebar" id="sidebar">
+
+            <div class="brand">
+                <img src="WALLET-removebg-preview (1).png" alt="" srcset="" id="imagewalllet">
+
+                <div>
+                    <h2>Expense Tracker</h2>
+                    <p>Personal Finance</p>
+                </div>
+            </div>
+
+            <div class="profile">
+                <img id="userAvatar" src="Screenshot 2026-10-26 145135.png" alt="User Profile">
+                <input
+                    type="text"
+                    id="userName"
+                    value="Your Name"
+                    placeholder="Enter your name"
+                >
+                <label for="imageUpload" class="upload-label">
+                    📷 Change Picture
+                </label>
+                <input
+                    type="file"
+                    id="imageUpload"
+                    accept="image/*"
+                >
+                <p class="net-balance">
+                    Net Balance: <span id="sidebarBalance">₹ 00</span>
+                </p>
+
+            </div>
+
+            <!-- Navigation -->
+            <nav class="navigation">
+
+                <button class="nav-btn active" data-tab="dashboard" id="dashboardTab">
+                    🏠 Dashboard
+                </button>
+
+                <button class="nav-btn" data-tab="transactions" id="transactionTab">
+                    📃 Transactions
+                </button>
+
+                <button class="nav-btn" data-tab="income" id="incomeTab">
+                    💰 Income
+                </button>
+
+                <button class="nav-btn" data-tab="expense" id="expensesTab">
+                    📉 Expenses
+                </button>
+
+                <button class="nav-btn" data-tab="task" id="NewTaskTab">
+                    ✍️ Add Task
+                </button>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                Expense Tracker v2.5
+            </div>
+
+        </aside>
+
+        <!-- Sidebar Background Overlay -->
+        <div class="overlay" id="overlay"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Top Header -->
+            <header class="top-header">
+
+                <div>
+                    <h1>Dashboard</h1>
+                    <p>Welcome back! Manage your finances easily.</p>
+                </div>
+
+                <div class="header-actions">
+                    <button class="primary-btn" id="setBudgetBtn">+ Set New Budget </button>
+                    <button class="primary-btn2" id="RefreshBtn">Refresh All</button>
+
+                </div>
+
+            </header>
+
+            <main class="content">
+
+                <!-- Summary Cards -->
+                <section class="summary-grid">
+
+                    <div class="summary-card">
+                        <div class="card-heading">
+                            <p>Total Budget</p>
+                            <span>💵</span>
+                        </div>
+
+                        <h2 id="balanceAmount">₹ 00</h2>
+                        <p class="positive">Your total budget</p>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="card-heading">
+                            <p>Total Expenses</p>
+                            <span>📉</span>
+                        </div>
+
+                        <h2 id="expenseAmount">₹ 00</h2>
+                        <p class="negative">Money spent</p>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="card-heading">
+                            <p>Net Balance</p>
+                            <span>💎</span>
+                        </div>
+
+                        <h2 id="netBalanceAmount">₹ 00</h2>
+                        <p class="positive">Remaining balance</p>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="card-heading">
+                            <p>Transactions</p>
+                            <span>📃</span>
+                        </div>
+
+                        <h2 id="transactionCount">0 </h2>
+                        <p class="muted">Total entries</p>
+                    </div>
+
+                </section>
+
+                <!-- Chart and Transaction Form -->
+                <section class="middle-section">
+
+                    <!-- Expense Breakdown -->
+                    <div class="panel expense-panel">
+
+                        <div class="panel-heading">
+                            <div>
+                                <h2>Expense Breakdown</h2>
+                                <p>Understand where your money goes.</p>
+                            </div>
+
+                            <select id="timeRangeSelect">
+                                <option>This Month</option>
+                                <option>Last Month</option>
+                                <option>Last 3 Month</option>
+                                <option>Last 6 Months</option>
+                                <option>This Year</option>
+                                <option>All Time</option>
+                            </select>
+                        </div>
+                            <div class="chartCategory">
+                                <!-- Chart Placeholder -->
+                                <div class="chart-area" id="chartArea">
+                                    <canvas id="expensePieChart"></canvas>
+                                </div>
+                                <div class="category-list" id="categoryList"></div>
+                                <!-- Expense Categories -->
+                               <div class="chartpannelBottom">                                
+                                <div class="category-list" id="categoryList">
+                                    <!-- Categories JavaScript se automatically aayengi -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Quick Transaction Form -->
+                    <div class="panel transaction-panel">
+
+                        <h2>Quick Transaction</h2>
+                        <p class="panel-description">
+                            Add a new income or expense.
+                        </p>
+
+                        <form id="quickAddForm" >
+                            <div class="ADDNEWTRANSCTION">
+                                <div class="form-group">
+                                    <label for="transDesc">Description</label>
+
+                                    <input
+                                        type="text"
+                                        id="transDesc"
+                                        placeholder="e.g. Grocery shopping"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="transAmount">Amount (₹)</label>
+
+                                    <input
+                                        type="number"
+                                        id="transAmount"
+                                        placeholder="Enter amount"
+                                        min="0.01"
+                                        step="0.01"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="transType">Transaction Type</label>
+
+                                    <select id="transType" class="transType">
+                                        <option value="" disabled selected hidden>Select Type</option>
+                                        <option value="expense">Expense</option>
+                                        <option value="income">Income</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="transType">Transaction Category</label>
+                                        <select id="transCategory" class="transCategory" required>
+                                            <option value="" disabled selected hidden>
+                                                Select Category
+                                            </option>
+                                            <option value="Food">Food</option>
+                                            <option value="Rent">Rent</option>
+                                            <option value="Bill">Bill</option>
+                                            <option value="Travelling">Travelling</option>
+                                            <option value="Fashion">Fashion</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="transType">Date</label>
+                                    <input type="date" id="TransDate">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="transType">Time(Optinal)</label>
+                                    <input type="time" id="TransTime">
+                                </div>
+
+                            </div>
+                                <p id="alertTaskForm"></p>
+                            <button type="submit" class="submit-btn">
+                                + Add Transaction
+                            </button>
+
+
+                        </form>
+
+                        <div class="sync-status">
+                            <span>Transaction status</span>
+                            <strong>Ready to add</strong>
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- Recent Transactions -->
+                <section class="panel history-panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Recent Transactions</h2>
+                            <p>Review your income and expenses.</p>
+                        </div>
+
+                    </div>
+
+                    <div class="table-wrapper">
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Date</th>
+                                    <th class="amount-column">Amount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionTableBody">
+                            </tbody>
+
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+
+            </main>
+
+            <footer class="page-footer">
+                Expense Tracker | Manage your money wisely.
+            </footer>
+
+        </div>
+
+    </div>
+
+    <!-- Budget Modal -->
+    <div class="modal" id="customModal">
+
+        <form class="modal-box">
+
+            <h2>New / Update Budget</h2>
+
+            <p>Enter your total monthly budget.</p>
+            <form class="BudgetForm">
+                <label for="modalInput">Budget Amount (₹)</label>
+
+                <input type="number" id="modalInput" min="0" placeholder="Enter budget">
+
+                <label for="modalInput" >Which Month Budget(Optional)</label>
+                <input type="month" id="ModalMonth">
+
+                <div class="modal-actions">
+                    <button id="modalCancel" class="cancel-btn">Cancel</button>
+
+                    <button id="modalConfirm" type="submit" class="primary-btn" >
+                        Save Budget
+                    </button>
+                </div>
+                <p id="alertNewBudget"></p>
+        </form>
+
+    </div>
+
+    <!-- Refresh all Budget Modal -->
+    <div class="modal" id="customModalRefresh">
+
+        <form class="SecondModalBox">
+
+            <h2>You Wan't to Format All Data</h2>
+
+            <p>Your all tranction Will be Empty!! </p>
+            <form class="BudgetForm">
+                <div class="modal-actions">
+                    <button id="modalCancel" class="cancel-btn">No!!</button>
+                    <button id="SecondModalConfirm" type="submit" class="primary-btn" >Yes Clear 👍</button>
+                </div>
+                <p id="alertNewBudget"></p>
+        </form>
+
+    </div>
+
+    <!-- More task Added -->
+    <div class="modalSecond" id="MoreTaskAdded">
+        <div class="form-box">
+            <h3>You Have more transction ?? </h3>
+            <form class="BudgetForm">
+                <div class="modal-actions">
+                    <button id="modalCancel" class="cancel-btn">Cancel</button>
+                    <button id="modalMore" type="submit" class="more-btn" >Add More</button>
+                </div>
+                <p id="alerTaskPannel"></p>
+            </form>
+        </div>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+
+
+</body>
+</html>
